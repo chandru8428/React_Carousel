@@ -1,5 +1,5 @@
 # Ex05 Image Carousel
-## Date:
+## Date: 31/08/26
 
 ## AIM
 To create a Image Carousel using React 
@@ -39,9 +39,148 @@ Use setInterval to call the nextImage() function at regular intervals.
 Clean up the interval when the component unmounts using clearInterval to prevent memory leaks.
 
 ## PROGRAM
+app.jsx
+~~~
+import React from 'react';
+import ImageCarousel from './imageCarousel';
 
+function App() {
+  const images = [
+    "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e",
+    "https://images.unsplash.com/photo-1519125323398-675f0ddb6308",
+    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e"
+  ];
+
+  return (
+    <div className="App">
+      <ImageCarousel images={images} />
+    </div>
+  );
+}
+
+export default App; 
+
+~~~
+image.jsx
+~~~
+import React, { useState, useEffect, useCallback } from 'react';
+
+const images = [
+  'https://images.unsplash.com/photo-1503023391225,
+  'https://images.unsplash.com/photo-1534528741702,
+  'https://images.unsplash.com/photo-1520813792240'
+];
+
+function ImageCarousel() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const nextImage = useCallback(() => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+  }, []);
+
+  const prevImage = () => {
+    setCurrentIndex((prevIndex) =>
+      (prevIndex - 1 + images.length) % images.length
+    );
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      nextImage();
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [nextImage]);
+
+  return (
+    <div style={{ textAlign: 'center' }}>
+      <h1>React Image Carousel</h1>
+      <img
+        src={images[currentIndex]}
+        alt="carousel"
+        style={{ width: '400px', borderRadius: '10px' }}
+      />
+      <br />
+      <button onClick={prevImage}>Previous</button>
+      <button onClick={nextImage} style={{ marginLeft: '10px' }}>
+        Next
+      </button>
+    </div>
+  );
+}
+
+export default ImageCarousel;
+~~~
+index.css
+~~~
+/* Reset and Font */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f8f9fa, #d6e4f0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Carousel Container */
+.carousel-container {
+  background-color: #ffffffdd;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Title */
+.carousel-container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  color: #2c3e50;
+}
+
+/* Image Styling */
+.carousel-container img {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s ease;
+}
+
+.carousel-container img:hover {
+  transform: scale(1.03);
+}
+
+/* Button Container */
+.button-container {
+  margin-top: 20px;
+}
+
+/* Navigation Buttons */
+.button-container button {
+  background-color: #2c3e50;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  margin: 0 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.button-container button:hover {
+  background-color: #34495e;
+}
+ ~~~
 
 ## OUTPUT
+<img width="835" height="375" alt="Screenshot 2026-08-31 143502" src="https://github.com/user-attachments/assets/af78fcd8-0724-4c6e-886b-1c94e7ceac71" />
+
+<img width="832" height="362" alt="Screenshot 2026-08-31 143513" src="https://github.com/user-attachments/assets/2214babd-7f55-4742-a2c1-daf55fda3065" />
 
 
 ## RESULT
